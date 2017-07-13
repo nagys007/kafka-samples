@@ -4,6 +4,7 @@ import org.apache.kafka.clients.consumer.Consumer;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
+import org.apache.kafka.common.PartitionInfo;
 import org.apache.kafka.common.TopicPartition;
 
 import java.util.*;
@@ -29,7 +30,13 @@ public class KafkaConsumerSample {
 
         consumer.subscribe(Arrays.asList(topic));
 
-        consumer.seekToBeginning(Arrays.asList(new TopicPartition(topic,0)));
+        consumer.poll(10000 );
+
+        List<TopicPartition> partitions = new ArrayList<>();
+        for (PartitionInfo partition : consumer.partitionsFor(topic))
+            partitions.add(new TopicPartition(topic, partition.partition()));
+
+        consumer.seekToBeginning(partitions);
 
         try {
             while (true) {

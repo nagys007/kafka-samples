@@ -15,6 +15,7 @@ import java.util.TimeZone;
 public class KafkaProducerSample {
 
     public static void main (String[] args) {
+
         Properties props = new Properties();
         props.put("bootstrap.servers", "confluent:9092");
         props.put("acks", "all");
